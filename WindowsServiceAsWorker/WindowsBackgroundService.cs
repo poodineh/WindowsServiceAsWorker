@@ -14,13 +14,23 @@ namespace WindowsServiceAsWorker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            await StartAsync(stoppingToken);
+        }
+
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
             {
                 string joke = await _oneService.GetJokeAsync();
                 _logger.LogWarning(joke);
 
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             }
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            return base.StopAsync(cancellationToken);
         }
     }
 }
