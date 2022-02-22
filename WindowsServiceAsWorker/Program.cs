@@ -13,6 +13,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddHostedService<WindowsBackgroundService>();
         services.AddHttpClient<OneService>();
+        services.AddControllers();
     })
 
     .ConfigureWebHostDefaults(webHost =>
@@ -22,12 +23,15 @@ using IHost host = Host.CreateDefaultBuilder(args)
             options.ListenLocalhost(9999, options =>
             {
                 options.Protocols = HttpProtocols.Http1AndHttp2;
-                options.UseHttps();
+
+                //options.UseHttps();
             });
         });
         webHost.UseStartup<Startup>();
+        
+        //webHost.Build();
     })
-
+    
     .Build();
 
 await host.RunAsync();

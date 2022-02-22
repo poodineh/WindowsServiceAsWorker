@@ -1,3 +1,4 @@
+using System.Threading;
 using WindowsServiceAsWorker.Services;
 
 namespace WindowsServiceAsWorker
@@ -30,6 +31,10 @@ namespace WindowsServiceAsWorker
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
+            _logger.LogWarning("Closing some tasks and memories before terminating the windows service...");
+            Thread.Sleep(5000);
+            _logger.LogWarning("Tasks are closed now. I am going to terminate the windows service...");
+
             return base.StopAsync(cancellationToken);
         }
     }
